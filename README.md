@@ -25,6 +25,11 @@ Next.js App Router, TypeScript, React, Tailwind CSS, Node's built-in SQLite API,
 
 The SQLite database is initialized automatically at `DATABASE_PATH` (default `./data/smartagri.db`). Open-Meteo is used without an API key. Add `OPENAI_API_KEY` to enable AI assistant responses. Without it, the assistant identifies its fallback status in the UI.
 
+## Project links
+
+- Public GitHub repository: https://github.com/malikshariqsource-sudo/smartagri-platform
+- Live application: Not deployed yet. A Vercel connection and persistent production database are still required.
+
 ## Production notes
 
 This project is configured for self-hosted Node deployments with persistent disk. Vercel's serverless filesystem is ephemeral, so SQLite must not be used there for durable user data. Before Vercel deployment, attach a managed PostgreSQL database, migrate the data layer to PostgreSQL/Prisma or a hosted database, then configure `SESSION_SECRET`, `DATABASE_URL`, and optionally `OPENAI_API_KEY` in Vercel. No production database or credentials were available in this workspace, so a public deployment has not been performed.
@@ -42,3 +47,4 @@ The landing page and authenticated dashboard were opened and visually checked in
 ## Security
 
 Passwords are bcrypt hashed; sessions are signed and stored in HTTP-only, same-site cookies. Set `SESSION_SECRET` in every environment. The demo app is intended for a single Node instance; add rate limiting, CSRF controls and managed database operations before public production use.
+
