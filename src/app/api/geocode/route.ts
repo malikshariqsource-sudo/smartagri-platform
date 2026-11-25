@@ -1,0 +1,2 @@
+import { NextResponse } from "next/server";
+export async function GET(req:Request){const q=new URL(req.url).searchParams.get("q")?.trim();if(!q||q.length<2)return NextResponse.json({error:"Enter at least two characters."},{status:400});try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=en&format=json`);if(!r.ok)throw new Error();return NextResponse.json((await r.json()).results||[]);}catch{return NextResponse.json({error:"Location search is unavailable."},{status:503});}}

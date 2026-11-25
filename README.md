@@ -42,4 +42,3 @@ The landing page and authenticated dashboard were opened and visually checked in
 ## Security
 
 Passwords are bcrypt hashed; sessions are signed and stored in HTTP-only, same-site cookies. Set `SESSION_SECRET` in every environment. The demo app is intended for a single Node instance; add rate limiting, CSRF controls and managed database operations before public production use.
-

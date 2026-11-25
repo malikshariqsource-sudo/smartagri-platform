@@ -1,0 +1,3 @@
+import {redirect} from "next/navigation";import {getUser} from "@/lib/auth";import db,{Crop,Activity} from "@/lib/db";import Dashboard from "@/components/Dashboard";
+export const dynamic="force-dynamic";
+export default async function Page(){const user=await getUser();if(!user)redirect("/login");const crops=(db.prepare("SELECT * FROM crops WHERE user_id=? ORDER BY harvest_on ASC").all(user.id) as Crop[]).map(c=>({...c}));const activities=(db.prepare("SELECT a.*,c.name crop_name FROM activities a LEFT JOIN crops c ON c.id=a.crop_id WHERE a.user_id=? ORDER BY happened_on DESC,a.id DESC LIMIT 8").all(user.id) as Activity[]).map(a=>({...a}));return <Dashboard user={{id:user.id,email:user.email,name:user.name}} initialCrops={crops} initialActivities={activities}/>}
