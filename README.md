@@ -14,7 +14,7 @@ SmartAgri is a responsive farm management app for crop records, daily field acti
 
 ## Stack
 
-Next.js App Router, TypeScript, React, Tailwind CSS, Node's built-in SQLite API, bcryptjs, Open-Meteo and optional OpenAI.
+Next.js App Router, TypeScript, React, Tailwind CSS, PostgreSQL through postgres.js for production, Node's built-in SQLite API for local development, bcryptjs, Open-Meteo and optional OpenAI.
 
 ## Run locally
 
@@ -23,7 +23,7 @@ Next.js App Router, TypeScript, React, Tailwind CSS, Node's built-in SQLite API,
 3. Copy `.env.example` to `.env.local`; set `SESSION_SECRET` to a random secret.
 4. `pnpm dev` and visit http://localhost:3000.
 
-The SQLite database is initialized automatically at `DATABASE_PATH` (default `./data/smartagri.db`). Open-Meteo is used without an API key. Add `OPENAI_API_KEY` to enable AI assistant responses. Without it, the assistant identifies its fallback status in the UI.
+When `DATABASE_URL` is unset, SQLite initializes automatically at `DATABASE_PATH` (default `./data/smartagri.db`). When `DATABASE_URL` is set, SmartAgri connects to Postgres and initializes its tables automatically. Open-Meteo is used without an API key. Add `OPENAI_API_KEY` to enable AI assistant responses. Without it, the assistant identifies its fallback status in the UI.
 
 ## Project links
 
@@ -32,7 +32,7 @@ The SQLite database is initialized automatically at `DATABASE_PATH` (default `./
 
 ## Production notes
 
-This project is configured for self-hosted Node deployments with persistent disk. Vercel's serverless filesystem is ephemeral, so SQLite must not be used there for durable user data. Before Vercel deployment, attach a managed PostgreSQL database, migrate the data layer to PostgreSQL/Prisma or a hosted database, then configure `SESSION_SECRET`, `DATABASE_URL`, and optionally `OPENAI_API_KEY` in Vercel. No production database or credentials were available in this workspace, so a public deployment has not been performed.
+For Vercel, set `DATABASE_URL` to a managed PostgreSQL connection string and configure `SESSION_SECRET` and optionally `OPENAI_API_KEY`. The app selects Postgres automatically; SQLite is for local development only because Vercel's serverless filesystem is ephemeral. A production database and Vercel connection have not been provisioned in this workspace, so the public deployment is still pending.
 
 ## API integrations
 
@@ -47,4 +47,3 @@ The landing page and authenticated dashboard were opened and visually checked in
 ## Security
 
 Passwords are bcrypt hashed; sessions are signed and stored in HTTP-only, same-site cookies. Set `SESSION_SECRET` in every environment. The demo app is intended for a single Node instance; add rate limiting, CSRF controls and managed database operations before public production use.
-
